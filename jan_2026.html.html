@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaratLane Champions League — January 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #F0D080;
+  --gold-pale: #FFF8E7;
+  --dark: #1A1208;
+  --dark2: #2C1F0A;
+  --mid: #4A3520;
+  --green: #2D7A4F;
+  --green-light: #E8F5EE;
+  --yellow-bg: #FFF9E6;
+  --yellow-border: #F5C842;
+  --red: #C0392B;
+  --gray: #6B6B6B;
+  --border: #E8DCC8;
+  --bg: #FDFAF4;
+  --white: #FFFFFF;
+  --shadow: 0 4px 24px rgba(26,18,8,0.10);
+  --shadow-lg: 0 8px 48px rgba(26,18,8,0.16);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #1A1208 0%, #2C1F0A 60%, #3D2B0F 100%);
+  padding: 28px 24px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.logo-caratlane {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--gold-light);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+.logo-tata {
+  font-size: 10px;
+  color: rgba(240,208,128,0.6);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+.logo-diamond {
+  width: 44px;
+  height: 44px;
+}
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 5vw, 34px);
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+.header-subtitle {
+  font-size: 13px;
+  color: rgba(240,208,128,0.7);
+  margin-top: 6px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.gold-line {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 14px auto 0;
+}
+
+/* NAV TABS */
+.nav-tabs {
+  display: flex;
+  overflow-x: auto;
+  background: var(--dark2);
+  border-bottom: 2px solid var(--gold);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  flex-shrink: 0;
+  padding: 13px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(240,208,128,0.6);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.nav-tab.active {
+  color: var(--gold-light);
+  border-bottom-color: var(--gold);
+}
+.nav-tab:hover { color: var(--gold-light); }
+
+/* MAIN */
+.main { padding: 16px; max-width: 1200px; margin: 0 auto; }
+
+/* SECTION */
+.section {
+  display: block;
+  visibility: hidden;
+  position: absolute;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+  width: 100%;
+  left: 0;
+}
+.section.active {
+  visibility: visible;
+  position: static;
+  pointer-events: auto;
+  height: auto;
+  overflow: visible;
+}
+
+/* NOTICE BANNER */
+.notice-banner {
+  background: linear-gradient(135deg, #FFF9E6, #FFF3CC);
+  border: 1.5px solid var(--yellow-border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: #7A5C00;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.notice-banner strong { display: block; margin-bottom: 2px; }
+
+/* REWARD CARDS */
+.reward-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media(min-width:600px) { .reward-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.reward-card {
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  border: 1.5px solid;
+}
+.reward-card.gold-card {
+  background: linear-gradient(135deg, #FFF9E6, #FFF0BC);
+  border-color: var(--gold);
+}
+.reward-card.green-card {
+  background: var(--green-light);
+  border-color: var(--green);
+}
+.reward-card.cert-card {
+  background: #F0F4FF;
+  border-color: #6B8FD4;
+  grid-column: 1 / -1;
+}
+@media(min-width:600px) { .reward-card.cert-card { grid-column: auto; } }
+
+.reward-emoji { font-size: 28px; margin-bottom: 6px; }
+.reward-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+.reward-card.gold-card .reward-amount { color: #8A6200; }
+.reward-card.green-card .reward-amount { color: var(--green); }
+.reward-label { font-size: 12px; color: var(--gray); margin-top: 3px; }
+.reward-desc { font-size: 11px; color: var(--gray); margin-top: 4px; }
+
+/* STAT PILLS */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.stat-pill {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1;
+}
+.stat-pill.gold-stat .stat-num { color: #8A6200; }
+.stat-pill.green-stat .stat-num { color: var(--green); }
+.stat-label { font-size: 11px; color: var(--gray); margin-top: 4px; }
+
+/* SECTION HEADING */
+.sec-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* WINNER CARDS */
+.winners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.winner-card {
+  border-radius: 12px;
+  padding: 12px;
+  position: relative;
+  border: 1.5px solid;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.winner-card:active { transform: scale(0.97); }
+.winner-card.gold-winner {
+  background: linear-gradient(135deg, #FFF9E6, #FFF0BC);
+  border-color: var(--gold);
+}
+.winner-card.green-winner {
+  background: var(--green-light);
+  border-color: var(--green);
+}
+.winner-rank {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+.winner-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+}
+.winner-card.gold-winner .winner-score { color: #8A6200; }
+.winner-card.green-winner .winner-score { color: var(--green); }
+.winner-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-top: 6px;
+  line-height: 1.3;
+}
+.winner-region {
+  font-size: 10px;
+  color: var(--gray);
+  margin-top: 3px;
+}
+.winner-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
+}
+
+/* SEARCH */
+.search-box {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow);
+}
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--dark);
+  background: transparent;
+}
+.search-box input::placeholder { color: #AAA; }
+.search-icon { color: var(--gold); font-size: 18px; }
+.search-clear {
+  cursor: pointer;
+  color: var(--gray);
+  font-size: 18px;
+  display: none;
+}
+
+.filter-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.filter-chip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--gray);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.filter-chip.active {
+  background: var(--dark);
+  color: var(--gold-light);
+  border-color: var(--dark);
+}
+.filter-chip.gold-chip.active { background: #8A6200; border-color: #8A6200; color: #FFF; }
+.filter-chip.green-chip.active { background: var(--green); border-color: var(--green); color: #FFF; }
+
+.result-count {
+  font-size: 12px;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+/* TABLE */
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  -webkit-overflow-scrolling: touch;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 600px;
+}
+thead {
+  background: var(--dark);
+  color: var(--gold-light);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+thead th {
+  padding: 11px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--gold); }
+thead th .sort-arrow { margin-left: 3px; opacity: 0.5; }
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(201,168,76,0.06); }
+tbody td { padding: 9px 10px; vertical-align: middle; }
+
+.row-gold { background: linear-gradient(90deg, #FFFAE8, #FFF) !important; }
+.row-green { background: linear-gradient(90deg, #EDFAF3, #FFF) !important; }
+.row-ineligible { opacity: 0.55; }
+
+.badge-score {
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+}
+.badge-score.s100 { color: #8A6200; }
+.badge-score.s95 { color: var(--green); }
+.badge-score.s90 { color: #2E6B8A; }
+.badge-score.slow { color: var(--red); }
+
+.tag {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.tag-gold { background: #FFF0BC; color: #8A6200; }
+.tag-green { background: #D4EDDA; color: var(--green); }
+.tag-eligible { background: #E8F4FD; color: #2E6B8A; }
+.tag-no { background: #F8E8E6; color: var(--red); }
+
+.score-bar-wrap { display: flex; align-items: center; gap: 6px; }
+.score-bar {
+  height: 5px;
+  border-radius: 3px;
+  background: var(--border);
+  flex: 1;
+  min-width: 40px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+/* CHARTS */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+@media(min-width:700px) { .charts-grid { grid-template-columns: 1fr 1fr; } }
+.chart-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.chart-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+.chart-canvas-wrap { position: relative; height: 240px; }
+
+/* REGION TABLE */
+.region-table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  -webkit-overflow-scrolling: touch;
+}
+.region-table { min-width: 500px; }
+.region-table thead { background: var(--dark2); }
+.region-table td, .region-table th { padding: 9px 12px; }
+.trend-up { color: var(--green); font-weight: 600; }
+.trend-dn { color: var(--red); font-weight: 600; }
+.trend-eq { color: var(--gray); }
+
+.delta-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.delta-up { background: #D4EDDA; color: var(--green); }
+.delta-dn { background: #F8E8E6; color: var(--red); }
+.delta-eq { background: #F0F0F0; color: var(--gray); }
+
+/* SCORE BREAKDOWN in table */
+.score-parts { display: flex; gap: 3px; flex-wrap: wrap; }
+.score-part {
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.sp-nps { background: #E8F0FF; color: #3355CC; }
+.sp-rev { background: #FFF0E6; color: #CC5500; }
+.sp-ops { background: #F0E8FF; color: #6633CC; }
+.sp-km { background: #E8FFE8; color: #336633; }
+
+/* MOBILE CARD VIEW */
+.mobile-cards { display: none; }
+@media(max-width:599px) {
+  .table-wrap { display: none; }
+  .mobile-cards { display: block; }
+}
+.m-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.m-card.row-gold { background: linear-gradient(135deg, #FFFAE8, #FFFCF0); }
+.m-card.row-green { background: linear-gradient(135deg, #EDFAF3, #F5FFF9); }
+.m-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.m-card-name { font-weight: 600; font-size: 13px; line-height: 1.3; flex: 1; }
+.m-card-score { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; }
+.m-card-meta { font-size: 11px; color: var(--gray); margin-bottom: 8px; }
+.m-card-scores { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; }
+.m-score-item { text-align: center; padding: 5px 3px; border-radius: 6px; }
+.m-score-item .val { font-weight: 700; font-size: 13px; }
+.m-score-item .lbl { font-size: 9px; color: var(--gray); margin-top: 1px; }
+
+/* SCROLL TO TOP */
+.fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: var(--gold-light);
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 0.2s;
+}
+
+/* LEGEND */
+.legend-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  font-size: 11px;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+/* PAGINATION */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.page-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--dark);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+}
+.page-btn.active { background: var(--dark); color: var(--gold-light); border-color: var(--dark); }
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.page-info { font-size: 12px; color: var(--gray); }
+
+/* INELIGIBLE SECTION */
+.toggle-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  user-select: none;
+}
+.toggle-section-title { font-size: 13px; font-weight: 600; color: var(--dark); }
+.toggle-chevron { margin-left: auto; transition: transform 0.2s; color: var(--gray); }
+.toggle-chevron.open { transform: rotate(180deg); }
+.collapsible { display: none; }
+.collapsible.open { display: block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <svg class="logo-diamond" viewBox="0 0 60 60" fill="none">
+      <polygon points="30,4 56,22 48,56 12,56 4,22" fill="none" stroke="#C9A84C" stroke-width="2"/>
+      <polygon points="30,12 50,25 43,50 17,50 10,25" fill="rgba(201,168,76,0.15)" stroke="#F0D080" stroke-width="1"/>
+      <polygon points="30,20 42,29 37,44 23,44 18,29" fill="rgba(201,168,76,0.25)"/>
+      <line x1="30" y1="4" x2="30" y2="20" stroke="#C9A84C" stroke-width="1"/>
+      <line x1="4" y1="22" x2="18" y2="29" stroke="#C9A84C" stroke-width="1"/>
+      <line x1="56" y1="22" x2="42" y2="29" stroke="#C9A84C" stroke-width="1"/>
+    </svg>
+    <div class="logo-text">
+      <span class="logo-caratlane">CARATLANE</span>
+      <span class="logo-tata">A TATA PRODUCT</span>
+    </div>
+  </div>
+  <div class="header-title">Champions League — January 2026 🏆</div>
+  <div class="header-subtitle">CCL Final Results · Released 01 March 2026</div>
+  <div class="gold-line"></div>
+</div>
+
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="showTab('overview')">🏆 Overview</div>
+  <div class="nav-tab" onclick="showTab('winners')">🥇 Winners</div>
+  <div class="nav-tab" onclick="showTab('scoreboard')">📋 Scoreboard</div>
+  <div class="nav-tab" onclick="showTab('regions')">🗺️ Regions</div>
+  <div class="nav-tab" onclick="showTab('analytics')">📊 Analytics</div>
+</div>
+
+<div class="main">
+
+<!-- ===================== OVERVIEW TAB ===================== -->
+<div id="tab-overview" class="section active">
+  <div class="notice-banner">
+    <span>⚠️</span>
+    <div>
+      <strong>Final Release — No Further Changes</strong>
+      Please note: once this email is released, no further changes can be made to the scores.
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-pill gold-stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">🥇 100% Stores</div>
+    </div>
+    <div class="stat-pill green-stat">
+      <div class="stat-num">38</div>
+      <div class="stat-label">✅ 95%+ Stores</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-num">79</div>
+      <div class="stat-label">📊 National Score</div>
+    </div>
+  </div>
+
+  <div class="reward-grid">
+    <div class="reward-card gold-card">
+      <div class="reward-emoji">🏆</div>
+      <div class="reward-amount">₹1,000</div>
+      <div class="reward-label">per person</div>
+      <div class="reward-desc">Top Stores · 100% Score</div>
+    </div>
+    <div class="reward-card green-card">
+      <div class="reward-emoji">🌟</div>
+      <div class="reward-amount">₹750</div>
+      <div class="reward-label">per person</div>
+      <div class="reward-desc">Next Best · 95%+ Score</div>
+    </div>
+    <div class="reward-card cert-card">
+      <div class="reward-emoji">📜</div>
+      <div class="reward-amount" style="color:#3355CC;font-size:16px;">Certificates</div>
+      <div class="reward-desc">Awarded to all January 2026 Champions &amp; stores with 100% NPS score</div>
+    </div>
+  </div>
+
+  <div class="sec-heading">🏆 Top Champions — 100% Score</div>
+  <div class="winners-grid" id="top-winners"></div>
+
+  <div class="sec-heading">🌟 Excellence Stores — 95%+ Score</div>
+  <div class="winners-grid" id="runner-winners"></div>
+
+  <div class="sec-heading">📈 National Trend (CCL Score)</div>
+  <div class="chart-card" style="margin-bottom:16px;">
+    <div class="chart-title">National Score: Nov'25 → Dec'25 → Jan'26</div>
+    <div class="chart-canvas-wrap"><canvas id="nationalChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ===================== WINNERS TAB ===================== -->
+<div id="tab-winners" class="section">
+  <div class="stat-row">
+    <div class="stat-pill gold-stat"><div class="stat-num">4</div><div class="stat-label">Gold (₹1,000/head)</div></div>
+    <div class="stat-pill green-stat"><div class="stat-num">34</div><div class="stat-label">Green (₹750/head)</div></div>
+    <div class="stat-pill"><div class="stat-num">38</div><div class="stat-label">Total Winners</div></div>
+  </div>
+
+  <div class="sec-heading">🥇 Gold Winners — 100% Score — ₹1,000/person Dinner Voucher</div>
+  <div class="winners-grid" id="all-gold-winners"></div>
+
+  <div class="sec-heading" style="margin-top:18px;">🟢 Green Winners — 95%+ Score — ₹750/person Dinner Voucher</div>
+  <div class="winners-grid" id="all-green-winners"></div>
+</div>
+
+<!-- ===================== SCOREBOARD TAB ===================== -->
+<div id="tab-scoreboard" class="section">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search by store name, region, code or ref…" oninput="applyFilters()" />
+    <span class="search-clear" id="searchClear" onclick="clearSearch()">✕</span>
+  </div>
+
+  <div class="filter-row">
+    <span class="filter-chip active" onclick="setFilter(this,'all')">All</span>
+    <span class="filter-chip gold-chip" onclick="setFilter(this,'gold')">🏆 Gold (100%)</span>
+    <span class="filter-chip green-chip" onclick="setFilter(this,'green')">🌟 95%+</span>
+    <span class="filter-chip" onclick="setFilter(this,'above90')">✅ 90%+</span>
+    <span class="filter-chip" onclick="setFilter(this,'below90')">📉 Below 90%</span>
+    <span class="filter-chip" onclick="setFilter(this,'eligible')">Eligible Only</span>
+  </div>
+
+  <div class="legend-row">
+    <div class="legend-item"><div class="legend-dot" style="background:#FFF0BC;border:1px solid #C9A84C;"></div> Gold (100%)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D4EDDA;border:1px solid #2D7A4F;"></div> Green (95%+)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#F0F0F0;border:1px solid #ccc;"></div> Eligible</div>
+    <div class="legend-item" style="opacity:0.5"><div class="legend-dot" style="background:#EEE;border:1px solid #ccc;"></div> Not Eligible</div>
+  </div>
+
+  <div class="result-count" id="resultCount">Loading…</div>
+
+  <!-- ELIGIBLE STORES -->
+  <div class="table-wrap">
+    <table id="scoreTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">Rank <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTable(1)">Store Name <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTable(2)">Region <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTable(3)">Code <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTable(4)">Points <span class="sort-arrow">↕</span></th>
+          <th>NPS/25</th>
+          <th>Rev/25</th>
+          <th>Ops/20</th>
+          <th>KM/15</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="scoreTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- MOBILE CARDS -->
+  <div class="mobile-cards" id="mobileCards"></div>
+
+  <div class="pagination" id="pagination"></div>
+
+  <!-- INELIGIBLE SECTION -->
+  <div style="margin-top:20px;" id="ineligibleSection">
+    <div class="toggle-section" onclick="toggleIneligible()">
+      <span>⚠️</span>
+      <span class="toggle-section-title">Ineligible / Special Status Stores</span>
+      <span class="toggle-chevron" id="ineligibleChevron">▼</span>
+    </div>
+    <div class="collapsible" id="ineligibleContent">
+      <div style="background:#FFF8F6;border:1px solid #F5C6C0;border-radius:10px;padding:12px;margin-bottom:10px;font-size:12px;color:#8A2020;">
+        These stores have NA scores in one or more categories (typically new stores or stores under renovation) and are not ranked in the main table.
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Store</th><th>Region</th><th>Code</th><th>NPS</th><th>Reviews</th><th>Ops</th><th>KM</th><th>Note</th></tr></thead><tbody id="naTableBody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== REGIONS TAB ===================== -->
+<div id="tab-regions" class="section">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="regionSearch" placeholder="Search region (exact match e.g. STN, STNK, EBJ)…" oninput="filterRegions()" />
+    <span class="search-clear" id="regionSearchClear" onclick="clearRegionSearch()">✕</span>
+  </div>
+
+  <div class="sec-heading">📊 Region-wise CCL Score — 3 Month Trend</div>
+  <div class="region-table-wrap">
+    <table class="region-table" id="regionTable">
+      <thead>
+        <tr style="color:var(--gold-light);">
+          <th>Region</th>
+          <th>Nov'25</th>
+          <th>Dec'25</th>
+          <th>Jan'26</th>
+          <th>CCL Δ</th>
+          <th>% Stores &gt;90 (Nov)</th>
+          <th>% Stores &gt;90 (Dec)</th>
+          <th>% Stores &gt;90 (Jan)</th>
+          <th>Store Δ</th>
+        </tr>
+      </thead>
+      <tbody id="regionTableBody"></tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:16px;" class="sec-heading">🏪 Stores in Region</div>
+  <div id="regionStoreList"></div>
+</div>
+
+<!-- ===================== ANALYTICS TAB ===================== -->
+<div id="tab-analytics" class="section">
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Score Distribution — Jan'26 vs Dec'25</div>
+      <div class="chart-canvas-wrap"><canvas id="barChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Jan'26 — Score Band Split</div>
+      <div class="chart-canvas-wrap"><canvas id="pieChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Top 10 Regions by Jan'26 CCL Score</div>
+      <div class="chart-canvas-wrap"><canvas id="regionBarChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">% Stores Above 90 — Jan'26</div>
+      <div class="chart-canvas-wrap"><canvas id="regionAbove90Chart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sec-heading">📌 Score Component Analysis (Eligible Stores)</div>
+  <div class="chart-card" style="margin-bottom:18px;">
+    <div class="chart-title">Average Score per Category</div>
+    <div class="chart-canvas-wrap" style="height:180px;"><canvas id="categoryChart"></canvas></div>
+  </div>
+
+  <div class="sec-heading">🏆 Top Performing Stores by Category</div>
+  <div id="categoryLeaders"></div>
+</div>
+
+</div><!-- /main -->
+
+<button class="fab" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// =================== DATA ===================
+const STORE_DATA = [
+  // [code, ref, name, region, total, nps, reviews, ops, km, eligible, naFlag]
+  // eligible: true = eligible, false = ineligible
+  // naFlag: true = has NA in km (recent store)
+  ["CFKNGDSR","KNGDSR","CL-ST-Kangra-DharamshalaRoadL2","NPJK",100,25,25,20,15,true,false],
+  ["CFKTNJBR","KTNJBR","CL-ST-KTN-Jabalpur RoadL2","WMP",100,25,25,20,15,true,false],
+  ["CFGZBIAM","GZBIAM","CL-ST-GZB-IndirapuramAdityaMall","NNCR2",100,25,25,20,15,true,false],
+  ["CRPATCCM","PATCCM","CL-ST-L3-PAT City Center Mall","EBJ",100,25,25,20,null,true,true],
+  ["CLMUMMLD","MUMMLD","CL-ST-MUM-Mulund","WMUM1",99,25,25,19,15,true,false],
+  ["CFPNPMDT","PNPMDT","CL-ST-PNP-Panipat ModelTown","NRH",99,25,25,20,15,true,false],
+  ["CFMUMDMV","MUMDMV","CL-ST-MUM-Dombivali","WMUM1",99,25,25,20,null,true,true],
+  ["CFCHNCDR","CHNCDR","CL-ST-CHN-Cathedral Road","STNK",98,23,25,20,15,true,false],
+  ["CFDELROH","DELROH","CL-ST-DEL-Rohini","NNCR2",98,23,25,20,15,true,false],
+  ["CFJBPNBR","JBPNBR","CL-ST-JBR-NaudraBridge","WMP",98,25,25,18,15,true,false],
+  ["CFTRPABR","TRPABR","CL-ST-TRP-Tirupati","SAP",98,23,25,20,15,true,false],
+  ["CFPUDKMS","PUDKMS","CL-ST-PUD-PuducherryKamaraj","STNK",98,25,25,20,13,true,false],
+  ["CFAJMANS","AJMANS","CL-ST-Ajmer-AnaSagarL2","NRH",98,25,25,20,14,true,false],
+  ["CFBHTBNB","BHTBNB","CL-ST-BHT-BathindaBankBazaar","NPJK",98,25,25,20,14,true,false],
+  ["CFTNVPKT","TNVPKT","CL-ST-TNV-TirunelveliPalayamkottai","STNK",98,23,25,20,15,true,false],
+  ["CFNELMBR","NELMBR","CL-ST-NEL-MiniBypassRoad","SAP",98,23,25,20,15,true,false],
+  ["CFNAVLSI","NAVLSI","CL-ST-NAV-LUNSIKUIL2","WMUM2",98,23,25,20,15,true,false],
+  ["CFBRHLKR","BRHLKR","CL-ST-BRH-Link Road","WMUM2",98,23,25,20,15,true,false],
+  ["CFHYDVNP","HYDVNP","CL-ST-HYD-VANASTHALIPURAM","STG",98,23,25,20,15,true,false],
+  ["CLKOLGHT","KOLGHT","CL-ST-KOL-Gariahat","EWB",97,23,25,20,14,true,false],
+  ["CRBBRSBN","BBRSBN","CL-ST-L3-BBR-Soubhagya Nagar","EOC",97,25,25,20,12,true,false],
+  ["CFKOLNGB","KOLNGB","CL-ST-KOL-Jessore Road","EWB",96,23,25,20,13,true,false],
+  ["CRTRCKBR","TRCKBR","CL-ST-L3-TRC-Karur Bypass","STNK",96,25,23,20,14,true,false],
+  ["CFLUDMDT","LUDMDT","CL-ST-LUD-ModelTown","NPJK",96,25,25,16,15,true,false],
+  ["CRDNBSDH","DNBSDH","CL-ST-L3-DNB-Saraidhela","EBJ",96,25,25,18,null,true,true],
+  ["CFDELLPN","DELLPN","CL-ST-DEL-Lajpat Nagar","NNCR1",95,23,25,20,12,true,false],
+  ["CFGWHCCM","GWHCCM","CL-ST-GWH- City Center Mall","ENE",95,20,25,20,15,true,false],
+  ["CFPATBCR","PATBCR","CL-ST-PAT-Boring Canal Road","EBJ",95,23,25,20,12,true,false],
+  ["CRRKLBIR","RKLBIR","CL-ST-L3-Rourkela-BirsaRoad","EOC",95,20,25,20,15,true,false],
+  ["CRIMPDMR","IMPDMR","CL-ST-L3-Imphal-DM CollegeRoad","ENE",95,25,21,20,15,true,false],
+  ["CAFDBMMR","FDBMMR","CL-ST-L8-Faridabad-MathuraMainRoad","NNCR2",95,20,25,20,15,true,false],
+  ["CFBRDGTR","BRDGTR","CL-ST-BRD- Bardhaman GTRoad","EWB",95,23,25,18,14,true,false],
+  ["CFHYDKPL","HYDKPL","CL-ST-HYD-Kompally","STG",95,20,25,20,15,true,false],
+  ["CFSHMMLR","SHMMLR","CL-ST-SHM-ShimlaMallRoadL2","NPJK",95,25,25,16,15,true,false],
+  ["CRPATBLR","PATBLR","CL-ST-L3- PAT-BLR","EBJ",95,23,25,20,12,true,false],
+  ["CFGKPMCR","GKPMCR","CL-ST-GKP-MedicalCollegeRoad","NUP1",95,25,25,19,11,true,false],
+  ["CFFDBPFM","FDBPFM","CL-ST-Faridabad-PacificMall","NNCR2",95,23,25,17,15,true,false],
+  ["CFPATHBR","PATHBR","CL-ST-PAT-Hathwamarket","EBJ",95,25,25,16,14,true,false],
+  ["CFPATNPC","PATNPC","CL-ST-PAT-NB ROAD","EBJ",94,20,25,20,14,true,false],
+  ["CFDELPCV","DELPCV","CL-ST-DEL-Paschim Vihar","NNCR1",94,23,25,16,15,true,false],
+  ["CRDNBMRE","DNBMRE","CL-ST-L3-Dhanbad-BankMore","EBJ",94,25,25,19,12,true,false],
+  ["CRBBRCSP","BBRCSP","CL-ST-L3-BNR-Chandrasekharpur","EOC",94,20,25,20,14,true,false],
+  ["CFMDRKKN","MDRKKN","CL-ST-MDR-Madurai KKNagar","STNK",94,20,25,20,14,true,false],
+  ["CFANTRJR","ANTRJR","CL-ST-ANT-RAJU RD","SAP",94,23,25,16,15,true,false],
+  ["CFHWHAVM","HWHAVM","CL-ST-HWH-HowrahAvaniMall","EWB",94,25,25,15,14,true,false],
+  ["CABLRRMM","BLRRMM","CL-ST-L8-BNG-RoyalMeenakshiMall","SKA2",94,25,25,19,10,true,false],
+  ["CFCBEAVR","CBEAVR","CL-ST-CBE-AvinashiRoadL2","STN",94,20,25,20,14,true,false],
+  ["CFMUMCBR","MUMCBR","CL-ST-MUM-Chembur","WMUM1",94,20,25,20,14,true,false],
+  ["CFZKPCAH","ZKPCAH","CL-ST-Zirakpur-ChandigarhAmbalaHighwayL2","NPJK",94,23,25,16,15,true,false],
+  ["CFBHLNHR","BHLNHR","CL-ST-BHL-NEHRU NAGARL2","EOC",94,25,25,17,14,true,false],
+  ["CFKKNSRP","KKNSRP","CL-ST-KKN-SURYA RAO PETA","SAP",94,23,25,20,14,true,false],
+  ["CRJMDBST","JMDBST","CL-ST-L3-JMD-BistupurRoad","EBJ",93,20,25,19,14,true,false],
+  ["CLAMDSJR","AMDSJR","CL-ST-AMD-Satellite Road","WGJ",93,23,25,16,15,true,false],
+  ["CRHISPLA","HISPLA","CL-ST-L3-Hisar-PLAMarket","NRH",93,23,25,16,15,true,false],
+  ["CRBBRJNP","BBRJNP","CL-ST-L3-BNR-Janpath","EOC",93,23,23,20,12,true,false],
+  ["CFDELMDT","DELMDT","CL-ST-DEL-ModelTownL2","NNCR2",93,23,25,16,14,true,false],
+  ["CFJALMDT","JALMDT","CL-ST-JAL-ModelTown","NPJK",93,23,21,19,15,true,false],
+  ["CFMUMPNL","MUMPNL","CL-ST-MUM-PanvelL2","WMUM1",93,25,25,16,14,true,false],
+  ["CFPATSMO","PATSMO","CL-ST-PAT-SagunaMore","EBJ",93,23,25,20,10,true,false],
+  ["CFMUMMIR","MUMMIR","CL-ST-MUM-MiraroadL2","WMUM2",93,20,25,19,14,true,false],
+  ["CFKURRSR","KURRSR","CL-ST-KUR-Kurnool","SAP",93,23,25,18,12,true,false],
+  ["CFKOTGMP","KOTGMP","CL-ST-KOT-Gumanpura","NRH",93,25,20,20,14,true,false],
+  ["CFTRUPLR","TRUPLR","CL-ST-TRU-PalladamRoad","STN",93,20,25,20,14,true,false],
+  ["CFSBPBDR","SBPBDR","CL-ST-SBP-Budharaja RoadL2","EOC",93,25,25,20,10,true,false],
+  ["CFSBPBDR2","KOLBST","CL-ST-KOL-Barasat","EWB",93,20,25,19,null,true,true],
+  ["CRBBRKDG","BBRKDG","CL-ST-L3- BBR- Khandagiri","EOC",93,23,25,20,null,true,true],
+  ["CFLKWSGM","LKWSGM","CL-ST-LKW-Saharaganj Mall","NUP1",92,23,23,17,14,true,false],
+  ["CFJPRMIR","JPRMIR","CL-ST-JPR-MI Road Jaipur","NRH",92,20,25,20,12,true,false],
+  ["CFDELKMN","DELKMN","CL-ST-DELHI-KamlaNagar","NNCR2",92,20,25,20,12,true,false],
+  ["CRGURMGR","GURMGR","CL-ST-L3-GUR-MGRoad","NNCR3",92,20,25,17,15,true,false],
+  ["CFVIZSVR","VIZSVR","CL-ST-VIZ-Sampath Vinayak Road","SAP",92,20,25,20,12,true,false],
+  ["CRDIBHSR","DIBHSR","CL-ST-L3-Dibrugarh-HS Road","ENE",92,25,25,19,14,true,false],
+  ["CFAGAHGB","AGAHGB","CL-ST-AGA-AgartalaHGBRoad","ENE",92,25,25,16,12,true,false],
+  ["CFKOLCNP","KOLCNP","CL-ST-KOL-ChinarPark","EWB",92,20,25,20,12,true,false],
+  ["CFARGJLR","ARGJLR","CL-ST-Chhatrapati Sambhajinagar-JalnaRoad","WROM2",92,20,23,19,15,true,false],
+  ["CFSLMOMR","SLMOMR","CL-ST-SLM-OmalurMainRoad","STN",92,23,25,20,12,true,false],
+  ["CFROHDLR","ROHDLR","CL-ST-ROH-DelhiRoad","NRH",92,23,25,16,14,true,false],
+  ["CFGDHSSS","GDHSSS","CL-ST-GDH-ShreejiSignatureSargasan","WGJ",92,20,23,20,14,true,false],
+  ["CFTJVPKR","TJVPKR","CL-ST-TJV-Pudukottai Main RoadL2","STNK",92,23,25,20,10,true,false],
+  ["CFVLRKMR","VLRKMR","CL-ST-VLR-Katpadi Main Road L2","STNK",92,20,25,20,14,true,false],
+  ["CFDDNDDM","DDNDDM","CL-ST-Derd-MallOfDehradun","NUP2",92,25,25,16,null,true,true],
+  ["CFCHDS17","CHDS17","CL-ST-CHA-Sector 17","NPJK",91,23,25,16,12,true,false],
+  ["CFMYSURS","MYSURS","CL-ST-MYS- Devraj Road","SKA2",91,23,25,15,14,true,false],
+  ["CFSRTGDR","SRTGDR","CL-ST-SRT-Ghod Dod Road","WMUM2",91,20,25,20,13,true,false],
+  ["CFKOLBHL","KOLBHL","CL-ST-KOL-Behala","EWB",91,20,23,20,15,true,false],
+  ["CFVNSVPZ","VNSVPZ","CL-ST-VNS-Varanasi VinayakPlaza","NUP1",91,20,25,19,13,true,false],
+  ["CFDELPJM","DELPJM","CL-ST-DEL-PacificJasolaMall","NNCR1",91,25,20,19,12,true,false],
+  ["CFHRDRNP","HRDRNP","CL-ST-Haridwar-RanipurMod","NUP2",91,23,25,16,12,true,false],
+  ["CFRJMJNR","RJMJNR","CL-ST-RJM-JNRoadL2","SAP",91,25,25,12,14,true,false],
+  ["CFCHNVLV","CHNVLV","CL-ST-CHN-VALASARAVAKKAML2","STNK",91,25,25,16,10,true,false],
+  ["CFRRKNHN","RRKNHN","CL-ST-RRK-NehruNagar","NUP2",91,25,25,16,10,true,false],
+  ["CFHYDPNG","HYDPNG","CL-ST-HYD-PanjaguttaL2","STG",90,20,25,16,14,true,false],
+  ["CFCHNVRM","CHNVRM","CL-ST-CHN-VRMallChennai","STNK",90,20,21,20,14,true,false],
+  ["CFVJWMGR","VJWMGR","CL-ST-VJW-Labbipeta","SAP",90,15,25,20,15,true,false],
+  ["CFMUMTGR","MUMTGR","CL-ST-THN-GokhaleRoadL2","WMUM1",90,23,25,14,15,true,false],
+  ["CLMUMBTR","MUMBTR","CL-ST-MUM-Bandra Turner Road","WMUM2",90,20,25,19,14,true,false],
+  ["CFMERBBR","MERBBR","CL-ST-MER-BegumBridgeRoad","NUP2",90,23,23,16,14,true,false],
+  ["CFSRTADJ","SRTADJ","CL-ST-SRT-Surat Adajan","WMUM2",90,20,25,17,13,true,false],
+  ["CFCHNOMR","CHNOMR","CL-ST-CHN-OMRThoraipakkam","STNK",90,23,25,16,12,true,false],
+  ["CFBLSBKG","BLSBKG","CL-ST-BLS-BalasoreBhaskarGanj","EOC",90,25,25,16,10,true,false],
+  ["CFVIZMDW","VIZMDW","CL-ST-VIZ-Madhurawada","SAP",90,20,25,16,14,true,false],
+  ["CFCHNTNR","CHNTNR","CL-ST-CHN-Tnagar","STNK",90,20,23,20,12,true,false],
+  ["CFJODCRD","JODCRD","CL-ST-Jodhpur-CRoad","NRH",90,25,25,13,12,true,false],
+  ["CFWRLHMK","WRLHMK","CL-ST-WRL-HanamkondaL2","STG",90,20,25,16,14,true,false],
+  ["CFKOLJDV","KOLJDV","CL-ST-KOL-Jadavpur","EWB",90,20,25,19,12,true,false],
+  ["CFKOLSDP","KOLSDP","CL-ST-KOL-SodepurL2","EWB",90,25,20,16,14,true,false],
+  ["CFIDRMGR","IDRMGR","CL-ST-IDR-M G Road","WMP",89,20,25,18,13,true,false],
+  ["CRAGRCHR","AGRCHR","CL-ST-L3-AGR-Church Road","NUP2",89,20,23,16,15,true,false],
+  ["CFLKWMHN","LKWMHN","CL-ST-LKW-Mahanagar","NUP1",89,20,25,15,14,true,false],
+  ["CRSRICWM","SRICWM","CL-ST-L3-Srinagar-CityWalkMall","NPJK",89,20,25,18,12,true,false],
+  ["CFKOLBTR","KOLBTR","CL-ST-KOL-BTRoad","EWB",89,23,25,16,null,true,true],
+  ["CLMUMRCM","MUMRCM","CL-ST-MUM-RCityMall","WMUM1",89,15,25,19,15,true,false],
+  ["CFLKWGMN","LKWGMN","CL-ST-LKW-GomtiNagar","NUP1",89,20,25,16,13,true,false],
+  ["CFNANVIP","NANVIP","CL-ST-NAN-NandedVIPRoad","WROM1",89,25,18,18,13,true,false],
+  ["CFNOIGBS","NOIGBS","CL-ST-NDD-GalaxyBlueSapphire","NNCR2",89,20,25,16,13,true,false],
+  ["CFUDIASN","UDIASN","CL-ST-UDI-UdaipurAshokNagar","NRH",89,25,23,17,12,true,false],
+  ["CFNTPKCH","NTPKCH","CL-ST-NTP-KanchraparaL2","EWB",89,20,25,16,14,true,false],
+  ["CFMDPKRT","MDPKRT","CL-ST-MDP-KERANITALA -L2","EWB",89,15,25,20,14,true,false],
+  ["CFNMKPDR","NMKPDR","CL-ST-NMK-R P Pudur","STN",89,25,25,12,12,true,false],
+  ["CFBNG88","BLRKMH","CL-ST-BNG-RMZ YELANKHA","SKA1",88,20,21,20,14,true,false],
+  ["CLAMDCHK","AMDCHK","CL-ST-AMD-Chandkheda","WGJ",88,23,23,15,14,true,false],
+  ["CFHYDCDN","HYDCDN","CL-ST-HYD-ChandaNagar","STG",88,15,25,20,14,true,false],
+  ["CFHUBKPR","HUBKPR","CL-ST-HUB-Hubli KoppikarRoad","SKA2",88,25,18,20,12,true,false],
+  ["CFRNCHMR","RNCHMR","CL-ST-RNC-Harmu Road","EBJ",88,23,25,15,12,true,false],
+  ["CFKOLLKM","KOLLKM","CL-ST-KOL-LakeMall","EWB",88,23,25,12,15,true,false],
+  ["CFERDRKV","ERDRKV","CL-ST-ERD-RKVRoad","STN",88,20,25,20,11,true,false],
+  ["CFMUMVSI","MUMVSI","CL-ST-MUM-VASAIL2","WMUM2",88,20,25,16,14,true,false],
+  ["CFGZBSPM","GZBSPM","CL-ST-GZB-Shipra Mall","NNCR2",87,15,25,20,12,true,false],
+  ["CFDELDWK","DELDWK","CL-ST-DEL-Dwarka","NNCR3",87,23,17,20,12,true,false],
+  ["CFBBRRSL","BBREOM","CL-ST-BNR-Rasulgarh","EOC",87,23,25,20,5,true,false],
+  ["CFHYDKOK","HYDKOK","CL-ST-HYD-Kokapet","STG",87,20,25,16,14,true,false],
+  ["CFBKRSTM","BKRSTM","CL-ST-BKR-SECTOR 3-MALLL2","EBJ",87,20,25,16,12,true,false],
+  ["CFRWAALR","RWAALR","CL-ST-RWA-Allahabad road","WMP",87,20,25,14,14,true,false],
+  ["CFBLRFSM","BLRFSM","CL-ST- BLR- Forum South Mall","SKA2",87,23,25,16,10,true,false],
+  ["CFKOLBKP","KOLBKP","CL-ST-KOL-Barackpore","EWB",87,20,25,16,null,true,true],
+  ["CFNOIDIM","NOIDIM","CL-ST-NDD-Noida18","NNCR2",86,20,25,13,13,true,false],
+  ["CFMOHVRM","MOHVRM","CL-ST-MOH-VR Mall","NPJK",86,20,25,13,14,true,false],
+  ["CFBLGTLW","BLGTLW","CL-ST-BLG-Tilakwadi","SKA2",86,23,20,16,12,true,false],
+  ["CFKOHDAC","KOHDAC","CL-ST-Kolhapur-DasaraChowkL2","WROM1",86,25,25,17,10,true,false],
+  ["CFPTKDHR","PTKDHR","CL-ST-Pathankot-DalhousieRoadL2","NPJK",86,15,25,16,15,true,false],
+  ["CFHSPMLR","HSPMLR","CL-ST-HSP-The Mall road","NPJK",86,15,25,17,14,true,false],
+  ["CFGURABM","GURABM","CL-ST-GUR-Ambience Mall","NNCR3",85,15,25,19,10,true,false],
+  ["CFDELPRV","DELPVR","CL-ST-DEL-Preet Vihar","NNCR2",85,15,20,20,15,true,false],
+  ["CFGZBABR","GZBABR","CL-ST-GZB-Ambedkar Road","NNCR2",85,20,25,20,5,true,false],
+  ["CAGURS14","GURS14","CL-ST-L8-GUR-GurgaonSec14","NNCR3",85,20,25,14,12,true,false],
+  ["CFGUNLKP","GUNLKP","CL-ST-Guntur-Lakshmipuram","SAP",85,15,25,20,10,true,false],
+  ["CFBLRMMR","BLRMMR","CL-ST-BNG-MalleshwaramMargosaRoad","SKA1",85,15,21,20,14,true,false],
+  ["CFLSILSVR","SILSVR","CL-ST-L3-SIL-Sevak Road","ENE",85,15,25,15,15,true,false],
+  ["CFIDRPCM","IDRPCM","CL-ST-IDR-CitadelMall","WMP",85,15,25,20,12,true,false],
+  ["CFDDNGMS","DDNGMS","CL-ST-DERD-GMSRoad","NUP2",85,25,21,12,14,true,false],
+  ["CABLRKRP","BLRKRP","CL-ST-L8-BNG-KRPuram","SKA1",85,20,21,17,13,true,false],
+  ["CFVNSVLP","VNSBLP","CL-ST-VNS-VaranasiBhelupur","NUP1",85,23,25,13,10,true,false],
+  ["CFBLRSKN","BLRSKN","CL-ST-BNG- Forum Mall","SKA1",85,15,12,16,10,true,false],
+  ["CFAGRSBR2","AGRSBD","CL-ST-L3-AGR-SikandraBodlaRoad","NUP2",85,23,25,12,null,true,true],
+  ["CFTRCPRC","TRCPRC","CL-ST-TRC-Promenade Road","STNK",85,15,25,19,null,true,true],
+  ["CFAMDCGR","AMDCGR","CL-ST-AMD-CG ROADL1","WGJ",84,25,12,20,12,true,false],
+  ["CFPUNBUN","PUNBUN","CL-ST-PUN-Bund Garden","WROM1",84,15,20,19,15,true,false],
+  ["CFKOLLTY","KOLTYG","CL-ST-KOL-Tollygunge","EWB",84,15,25,15,14,true,false],
+  ["CFDDNUCM","DDNUCM","CL-ST-DERD-DehradunUnisonMall","NUP2",84,23,20,16,12,true,false],
+  ["CFMUZKAM","MUZKLM","CL-ST-MUZ-KalambaghRoad","EBJ",84,20,25,12,12,true,false],
+  ["CFDMRKMH","DMRKMH","CL-ST-DMR-KherMahal","ENE",84,23,25,16,5,true,false],
+  ["CFUJNFGJ","UJNFGJ","CL-ST-UJN-FreeganjL2","WMP",84,25,15,16,13,true,false],
+  ["CFJLNRRD","JLNRRD","CL-ST-JLN-Ring RoadL2","WROM2",84,25,25,16,5,true,false],
+  ["CFKOLACR","KOLAPM","CL-ST-KOL-Acropolis Mall","EWB",83,15,25,19,10,true,false],
+  ["CRCBECCR","CBECCR","CL-ST-L3-CBE-CrossCutRoad","STN",83,10,25,19,14,true,false],
+  ["CFBLRBEL","BLRBEL","CL-ST-BNG-New BEL Road","SKA1",83,20,19,17,14,true,false],
+  ["CFBLRCMS","BLRCMS","CL-ST-BNG-CommercialStreet","SKA1",83,25,20,18,5,true,false],
+  ["CFPUNKVR","PUNKRV","CL-ST-PNE-KarveRoad","WROM1",83,15,23,16,14,true,false],
+  ["CFALIMRR","ALIMRR","CL-ST-L3-Aligarh-MarrisRoad","NUP2",83,23,20,12,14,true,false],
+  ["CFBRLCVL","BRLCVL","CL-ST-Bareilly-CivilLinesL2","NUP2",83,23,25,20,0,true,false],
+  ["CFKARKPR","KARKPR","CL-ST-Karnal-KunjpuraRoadL2","NRH",83,15,25,14,14,true,false],
+  ["CFGURABM2","GURABM","CL-ST-GUR-Ambience Mall","NNCR3",82,15,25,19,10,true,false],
+  ["CFMUMADH","MUMADH","CL-ST-MUM-Andheri West","WMUM2",82,15,25,14,13,true,false],
+  ["CFPRPATL","PTLBPR","CL-ST-L3-Patiala-BhupindraRoad","NPJK",82,23,17,16,12,true,false],
+  ["CFRPRPDR","RPRPDR","CL-ST-RPR-PANDRIL2","EOC",82,15,23,20,10,true,false],
+  ["CFAMDSBN","AMDSBN","CL-ST-AMD-SindhuBhavanL2","WGJ",82,23,21,16,10,true,false],
+  ["CFMUMKGR","MUMKGR","CL-ST-MUM-KhargharL2","WMUM1",82,20,15,19,14,true,false],
+  ["CFBGPKCR","BGPKCR","CL-ST-BGP-BhagalpurKachahariRoad","EBJ",82,15,25,14,14,true,false],
+  ["CFHYDNLG","HYDNLG","CL-ST-HYD-NallagandlaL2","STG",82,23,15,16,13,true,false],
+  ["CLMUMBOM","MUMBOM","CL-ST-MUM-Borivali Oberoi Mall","WMUM2",82,25,25,14,12,true,false],
+  ["CFMUMSEW","MUMSCM","CL-ST-MUM-Sea Woods MallL2","WMUM1",81,15,25,11,15,true,false],
+  ["CFMATHRN","MTHKRN","CL-ST-Mathura-KrishnaNagarL2","NUP2",81,20,25,16,5,true,false],
+  ["CAANDVVN","ANDVVN","CL-ST-L8-AND-VVNagarroad","WGJ",81,25,21,16,5,true,false],
+  ["CFMUMVSH","MUMV17","CL-ST-MUM-VashiSector17L2","WMUM1",81,10,23,18,15,true,false],
+  ["CFSAHDLR","SAHDLR","CL-ST-Saharanpur-DelhiRoadL2","NUP2",81,25,25,12,5,true,false],
+  ["CFHGHCHN","HGHCHN","CL- ST-HGH- CHANDANNAGAR L2","EWB",81,15,23,16,14,true,false],
+  ["CFAZMNRC","AZMNRC","CL-ST-AZAMGARH-NARAULI CHAURAHA","NUP1",81,23,21,16,null,true,true],
+  ["CFNOIDDM","NOIDIM","CL-ST-NDD-DLF Mall-L2","NNCR2",80,10,25,16,14,true,false],
+  ["CFDELPIT","DELPTR","CL-ST-DEL-PITAM PURA","NNCR2",80,20,25,20,5,true,false],
+  ["CFINDABR","IDRABR","CL-ST-Indore-ABRoad","WMP",80,20,18,16,12,true,false],
+  ["CFCHNSLY","CHNSLR","CL-ST-CHN-Selaiyur","STNK",80,23,20,15,10,true,false],
+  ["CFBLRJPN","BLRJPN","CL-ST-BNG-JP Nagar","SKA2",80,23,17,15,10,true,false],
+  ["CLMUMRCB","MUMVIR","CL-ST-MUM-RedBricksVirar","WMUM2",80,10,25,16,14,true,false],
+  ["CFLKWALB","LKWALB","CL-ST-LKW-Alambagh","NUP1",80,15,25,13,12,true,false],
+  ["CRMBDCVL","MBDCVL","CL-ST-L3-Moradabad-CivilLines","NUP2",80,15,25,16,10,true,false],
+  ["CFBLRM5e","BLRMEM","CL-ST-BLR-M5 E-CITY MALLL2","SKA2",80,15,20,18,12,true,false],
+  ["CFCBEBFM","CBEBFM","CL-ST-CBE-BROOKEFIELDS MALL","STN",80,10,25,16,14,true,false],
+  ["CFHYDJBH","HYDJBH","CL-ST-HYD-Jubilee Hills","STG",79,20,17,16,12,true,false],
+  ["CFPUNPMM","PUNPMM","CL-ST-PNE-Phoenix Market City","WROM1",79,20,25,11,12,true,false],
+  ["CFKOLSCM","KOLSCM","CL-ST-KOL-SOUTH CITY MALL","EWB",79,10,23,16,15,true,false],
+  ["CFBLRMTH","BLRMTH","CL-ST-BNG-Marthahalli","SKA1",79,23,23,20,0,true,false],
+  ["CFCHNADR","CHNADR","CL-ST-CHN-ADYAR","STNK",79,15,25,12,12,true,false],
+  ["CFPUNHDP","PUNHDP","CL-ST-PNE-HadapsarL2","WROM1",79,15,16,20,13,true,false],
+  ["CFMUMTVK","MUMTVK","CL-ST-MUM-ThakurVillage","WMUM2",79,15,25,11,14,true,false],
+  ["CFPUNSTR","PUNSTR","CL-ST-PNE-SataraRoad","WROM1",79,25,15,12,14,true,false],
+  ["CFHLDNTR","HLDNTR","CL-ST-Haldwani-NainitalRoadL2","NUP2",79,23,25,12,5,true,false],
+  ["CFCHNMRM","CHNMRM","CL-ST-CHN-MarinaMallL2","STNK",79,10,25,19,12,true,false],
+  ["CFCBETUD","CBETUD","CL-ST-CBE-Mettupalayam Road Thudiyalur","STN",79,15,25,20,5,true,false],
+  ["CFNOIACM","NOIACM","CL-ST-NDD-AdityaCentral50Mall","NNCR2",79,25,25,17,0,true,false],
+  ["CFSILCCM","SILCCM","CL-ST-L3-SIL-City Centre Mall","ENE",78,10,25,18,10,true,false],
+  ["CFDELRGD","DELRAJ","CL-ST-DEL-RajouriGarden Delhi","NNCR1",78,5,25,20,13,true,false],
+  ["CFDELWGM","DELVGM","CL-ST-DEL-Vegas Mall Dwarka","NNCR3",78,23,17,20,5,true,false],
+  ["CFCHNANN","CHNANN","CL-ST-CHN-ANNA NAGAR","STNK",78,15,23,15,14,true,false],
+  ["CFBLRECT","BLRECT","CL-ST-BNG-ElectronicCity","SKA2",78,20,17,14,12,true,false],
+  ["CFDEKRKB","DELKPR","CL-ST-DEL-KarolBaghPusaRoad","NNCR1",78,10,25,16,14,true,false],
+  ["CFHOSBGR","HOSBGR","CL-ST-HOS-BagalurRoad","STN",78,20,20,20,5,true,false],
+  ["CFMEERGH","MERGRH","CL-ST-Meerut-GarhRoad","NUP2",78,10,25,16,null,true,true],
+  ["CFLBLR3k","BLRSJP","CL-ST- BLR-SarjapurRoad Doddakanneli","SKA1",76,20,17,16,10,true,false],
+  ["CFLBLR3m","BLRJAY","CL-ST-BNG-Jayanagar","SKA2",76,5,12,20,5,true,false],
+  ["CFMANMGR","MGLBJI","CL-ST-Mangalore-MangaloreBejai","SKA1",76,20,12,20,10,true,false],
+  ["CFCOCMGR","COCMGR","CL-ST-Cochin-KochiMGRoad","STN",76,5,25,20,12,true,false],
+  ["CFBERBRO","BERDNR","CL-ST-L3-BER-BerhampurOdisha","EOC",76,25,20,12,5,true,false],
+  ["CFPNEPSD","PUNPPS","CL-ST-PNE-PimpleSaudagarL2","WROM1",76,10,25,14,14,true,false],
+  ["CFBSFRNR","BSFRNR","CL-ST-L3-BSF- Ranchi Road","EBJ",76,10,25,17,null,true,true],
+  ["CFJPRVSN","JPRVSN","CL-ST-Jaipur-VaishaliNagar","NRH",75,25,17,19,0,true,false],
+  ["CFJAMUPL","JMUBHP","CL-ST-Jammu-BahuPlazaL2","NPJK",75,20,15,16,14,true,false],
+  ["CFDELPCM","DELPCM","CL-ST-DEL-Pacific Mall-L2","NNCR1",74,10,25,16,10,true,false],
+  ["CFMUMIFM","MUMIFM","CL-ST-MUM-Infinity Mall","WMUM2",74,15,17,12,15,true,false],
+  ["CFPRYGJ","PRYSPM","CL-ST-L3-UP-Prayagraj","NUP1",74,20,25,16,0,true,false],
+  ["CFNGPDHP","NGPDHP","CL-ST-NGP-Dharampet","WROM2",74,15,18,16,11,true,false],
+  ["CFKOLKKG","KOLKKG","CL-ST-KOL-Kankurgachi","EWB",74,5,25,16,14,true,false],
+  ["CFKNPSWN","KNPSWN","CL-ST-KNP-SwarupNagar","NUP1",74,20,23,16,0,true,false],
+  ["CFYMNGPR","YMNGPR","CL-ST-YMN-YamunaNagarGobindpuriRoad","NRH",74,0,25,20,14,true,false],
+  ["CFAMDMNG","AMDMNG","CL-ST-AMD-ManiNagar","WGJ",74,25,15,19,0,true,false],
+  ["CFCHWPSR","CHWPSR","CL-ST-CHW-Parasia RoadL2","WROM2",74,25,25,12,12,true,false],
+  ["CFAMDSOB","AMDSBR","CL-ST-AMD-South Bopal","WGJ",74,20,15,12,14,true,false],
+  ["CFGYASWP","GYASWP","CL-ST-GYA - SWARAJPURI L2","EBJ",74,10,25,12,14,true,false],
+  ["CFCOCPLV","COCPLV","CL-ST-COC-Palarivattom","STN",74,15,25,16,5,true,false],
+  ["CFKOLPKS","KOLPKS","CL-ST-KOL- Park Street","EWB",73,20,25,13,0,true,false],
+  ["CFBLRKMH2","BLRKMH","CL-ST-BNG-KAMMANAHALLI","SKA1",73,20,15,16,10,true,false],
+  ["CFBLRORM","BLRORM","CL-ST-BNG-Orion Mall","SKA1",73,23,11,12,12,true,false],
+  ["CFBILSPC","BLPMSG","CL-ST-Bilaspur-AgrasenChowkL2","EOC",73,20,25,13,0,true,false],
+  ["CFGURGAPL","GURAJS","CL-ST-GUR-AIPL JoyStreet","NNCR3",73,15,15,19,10,true,false],
+  ["CFGWLDBM","GWLDBM","CL-ST-GWL-GwaliorDBMall","WMP",73,15,25,16,5,true,false],
+  ["CRCTKCDA","CTKCDA","CL- ST-CTK- CDA 6 L3","EOC",73,20,25,16,0,true,false],
+  ["CFAMDNKL","AMDNKL","CL-ST-AMD-Nikol","WGJ",73,20,20,19,0,true,false],
+  ["CFHYDHIM","HYDHIM","CL-ST-HYD-HIMAYAT NAGAR","STG",72,20,21,20,0,true,false],
+  ["CFKOLCC1","KOLCC1","CL-ST-KOL-City Center Mall","EWB",72,0,25,19,13,true,false],
+  ["CFBLRBSK","BLRBSK","CL-ST-BLR-Banashankari","SKA1",72,10,25,16,10,true,false],
+  ["CFDELJNP","DELJNP","CL-ST-DEL-Janakpuri","NNCR1",72,15,23,19,0,true,false],
+  ["CFKOLKMG","KOLKMG","CL-ST-KOL-KamalgaziL2","EWB",72,10,25,16,10,true,false],
+  ["CFMHSRUR","MHSRUR","CL-ST-MHS-Radhanpur Road","WGJ",72,5,25,16,12,true,false],
+  ["CFANIPBL","ANIPBL","CL-ST-ANI-Portblair","EWB",72,20,15,13,null,true,true],
+  ["CFBLRVCM","BLRVCM","CL-ST-BNG-Vega City Mall","SKA2",71,5,23,17,12,true,false],
+  ["CFPNEPCH","PUNPCH","CL-ST-PNE-Pimpri Chinchwad","WROM1",71,10,20,14,12,true,false],
+  ["CFVDDKRB","VDDKRB","CL-ST-VDD-KareliBaughL2","WGJ",71,10,25,12,12,true,false],
+  ["CFCHNPMR","CHNPMR","CL-ST-CHN-Perambur","STNK",71,10,17,15,14,true,false],
+  ["CFMYSNXM","MYSNXM","CL-ST-MYS-NexusMall","SKA2",71,10,17,20,12,true,false],
+  ["CFCHNAMT","CHNABT","CL-ST-CHN-AmbatturL2","STNK",71,20,25,12,0,true,false],
+  ["CLMUMGOM","MUMGOM","CL-ST-MUM-Goregaon Oberoi Mall","WMUM2",71,5,25,14,14,true,false],
+  ["CFSHLPLB","SHLPLB","CL-ST-SHL-POLICE BAZAR L2","ENE",71,20,25,16,0,true,false],
+  ["CFCHD70","CHDMMJ","CL-ST-CHD-Manimajra","NPJK",70,5,25,16,12,true,false],
+  ["CFBLRFKM","BLRFKM","CL-ST-BNG-ForumKoramangalaNew","SKA2",70,10,25,16,5,true,false],
+  ["CFPUNJMR","PUNJMR","CL-ST-PUN-JM Road","WROM1",70,5,20,15,15,true,false],
+  ["CFNOISPK","NOISPM","CL-ST-NDD-SpectrumMetroMall","NNCR2",70,20,25,12,0,true,false],
+  ["CFGNTWPM","GNTWPM","CL-ST-GNT-Westpoint MallL2","ENE",70,0,25,19,11,true,false],
+  ["CFCBERSP","CBERSP","CL-ST-CBE-CoimbatoreRSPuram","STN",69,15,23,13,5,true,false],
+  ["CFTVRMGR","TVRMGR","CL-ST-TVR-TrivandrumMGRoad","STN",69,20,8,14,14,true,false],
+  ["CFDBGMZP","DBGMZP","CL-ST-DBG-Mirzapur Chowk","EBJ",69,20,25,12,5,true,false],
+  ["CFPNENIB","PUNNIB","CL-ST-PNE-NIBMRoadL2","WROM1",69,15,15,12,12,true,false],
+  ["CFRPRVIP","RPRVIP","CL-ST-Raipur-VIP ChowkL2","EOC",69,10,15,15,14,true,false],
+  ["CFMGLFZM","MGLFZM","CL-ST-MGL-FizaMall","SKA1",69,0,25,20,10,true,false],
+  ["CFITNESC","ITNESC","CL-ST-ITN-E SECTORL2","ENE",69,15,15,12,14,true,false],
+  ["CFMUMMAL","MUMMLR","CL-ST-MUM-MALAD LINK ROAD","WMUM2",69,5,20,15,15,true,false],
+  ["CFLKWPPM","LKWPPM","CL-ST-LKW-PhoenixPalassioMall","NUP1",69,0,25,18,14,true,false],
+  ["CFBLRFMM","BLRSKN","CL-ST-BNG- Forum Mall","SKA1",68,15,12,16,10,true,false],
+  ["CFPATKRB","PATKRB","CL-ST-PAT-KANKARBAGHL2","EBJ",68,15,25,16,0,true,false],
+  ["CFBLRKNK","BLRKKP","CL-ST-BLR-KanakpuraL2","SKA1",68,23,12,20,0,true,false],
+  ["CFHYDKDP","HYDKDP","CL-ST-HYD-Kondapur","STG",68,5,17,20,12,true,false],
+  ["CFBLRBMH","BLRBMH","CL-ST-BNG-Bommanahalli","SKA2",68,20,23,12,0,true,false],
+  ["CFHYDFMM","HYDSFM","CL-ST-HYD-Forum Mall","STG",67,0,25,15,12,true,false],
+  ["CFVADINB","VDDIBM","CL-ST-VAD-Inorbit Mall","WGJ",67,10,11,19,12,true,false],
+  ["CFHYDASR","HYDASR","CL-ST-HYD-ASR Nagar","STG",67,5,23,16,10,true,false],
+  ["CFPJMMGR","PJMMGR","CL-ST-Panjim-MGRoad","WROM1",67,5,23,16,10,true,false],
+  ["CFPUNTOH","PUNTOH","CL-ST-PNE-TerminalONEHinjewadi","WROM1",67,20,10,12,14,true,false],
+  ["CFDELPRM","DELPRM","CL-ST-DEL-DLFPromenade","NNCR1",67,20,5,15,12,true,false],
+  ["CFAYDRMP","AYDRMP","CL-ST-AYD-RAMPATHMARGL2","NUP1",67,20,25,12,0,true,false],
+  ["CFPUNMLT","PUNPWM","CL-ST-PUN-PHOENIX MILLENNIUM WAKAD","WROM1",67,10,15,13,14,true,false],
+  ["CFRNCRMR","RNCRMR","CL-ST-RNC-Lake Road","EBJ",66,10,25,16,0,true,false],
+  ["CFJBPGGR","JBPGGR","CL-ST-JBR-GG ROAD","WMP",66,5,21,14,11,true,false],
+  ["CFAIZTGS","AIZTGS","CL-ST-MIZ-Aizwal","ENE",66,5,15,20,14,true,false],
+  ["CFCHNVEL","CHNVEL","CL-ST-CHN-Velachery","STNK",66,10,11,18,12,true,false],
+  ["CFAMBCNT","AMBCNT","CL-ST-AMB-Ambala Cantt","NRH",66,0,25,12,14,true,false],
+  ["CFGURS29","GURS29","CL-ST-GUR-Sector29","NNCR3",66,0,25,12,14,true,false],
+  ["CRSVKTHR","SVKTHR","CL-ST-L3-SVK-Thiruthangal Rd","STNK",66,10,15,12,14,true,false],
+  ["CFBLRIND","BLRIND","CL-ST-BNG-Indra Nagar","SKA1",65,10,16,20,5,true,false],
+  ["CFVAPCBC","VAPCBC","CL-ST-VAP-VapiCapitalBusinessCentre","WMUM2",65,15,18,12,13,true,false],
+  ["CFKRNJGT","KRNJGT","CL-ST-KRN-Jagtial RoadL2","STG",65,5,23,16,10,true,false],
+  ["CFLUDMHR","LUDMHR","CL-ST-LUD-Malhar Road","NPJK",64,15,23,12,0,true,false],
+  ["CFBLRWFL","BLRWFL","CL-ST-BNG-Whitefield","SKA1",64,10,17,12,12,true,false],
+  ["CFHYDSKP","HYDSKP","CL-ST-HYD-Shaikpet","STG",64,0,21,19,10,true,false],
+  ["CFNOIKNP","NOIKNP","CL-ST-NDD-KnowledgePark","NNCR2",62,0,25,17,5,true,false],
+  ["CFHYDKHG","HYDKHG","CL-ST-HYD-Khajaguda L2","STG",62,0,25,16,null,true,true],
+  ["CFDELPIT2","DELPEM","CL-ST-DEL-PitampuraEleganteMall","NNCR2",62,5,15,20,null,true,true],
+  ["CRBHPDCM","BHPDCM","CL-ST-L3-BHP-DB City Mall","WMP",61,23,15,12,0,true,false],
+  ["CFNOIGCM","NOIGCM","CL-ST-NDD-GaurCityMall","NNCR2",61,10,7,16,14,true,false],
+  ["CFHYDKKP","HYDKKP","CL-ST-HYD-Kukatpally","STG",61,0,20,15,12,true,false],
+  ["CFGWHKLP","GWHKLP","CL-ST-GWH-Kalapahar","ENE",61,5,15,15,11,true,false],
+  ["CFASNMGL","ASNMGL","CL-ST-ASN-MURGASOL","EWB",61,15,0,19,14,true,false],
+  ["CFGWHGSR","GWHGSR","CL-ST-GWH-GuwahatiGSRoad","ENE",60,0,15,19,12,true,false],
+  ["CFGWHSME","GWHSME","CL-ST-GWH-SIX MILEL2","ENE",60,15,0,20,12,true,false],
+  ["CLCHNUSN","CHNUSN","CL-ST-CHN-USMAN ROAD","STNK",60,0,20,20,null,true,true],
+  ["CLBLRMGR","BLRMGR","CL-ST-BLR- MG ROAD","SKA1",60,5,25,20,null,true,true],
+  ["CFBLRPMM","BLRPMM","CL-ST-BNG-Phoenix Mall","SKA1",59,5,16,15,12,true,false],
+  ["CFALWJCR","ALWJCR","CL-ST-ALW-Alwar","NRH",59,5,25,16,0,true,false],
+  ["CFTHNTHL","MUMKLN","CL-ST-THN-LakeShore","WMUM1",58,0,17,15,11,true,false],
+  ["CFRAJRIR","RAJRIR","CL-ST-L3-RAJ-150 RING ROAD","WGJ",58,5,25,13,0,true,false],
+  ["CFTHNTHL2","MUMKLN","CL-ST-THN-KalyanL2","WMUM1",58,0,25,14,13,true,false],
+  ["CFHYDHTC","HYDHTC","CL-ST-HYD-HITECH CITY ROAD","STG",58,5,25,16,12,true,false],
+  ["CFBLRJYN","BLRJAY","CL-ST-BNG-Jayanagar","SKA2",57,5,12,20,5,true,false],
+  ["CFBLRRRN","BLRRRN","CL-ST-BNG-RR Nagar","SKA1",57,20,10,20,0,true,false],
+  ["CFHYDIBM","HYDIBM","CL-ST-HYD-Inorbit Mall","STG",56,10,17,15,0,true,false],
+  ["CFNSKCCR","NSKCCR","CL-ST-NSK-Canada Corner","WROM2",56,0,20,12,11,true,false],
+  ["CFTHNGBR","MUMGBR","CL-ST-THN-GhodbunderRoadL2","WMUM1",56,0,20,11,10,true,false],
+  ["CFDURCTC","DURCTC","CL-ST-DUR-DurgapurCityCentre","EWB",56,5,21,16,0,true,false],
+  ["CFIDRSSR","IDRSSR","CL-ST-IDR-SapnaSangeetaRoad","WMP",56,0,17,16,10,true,false],
+  ["CFKHMWYR","KHMWYR","CL-ST-KHM-WYRA ROADL2","STG",56,5,25,12,14,true,false],
+  ["CFPUNWEM","PUNWEM","CL-ST-PNE-West End Mall","WROM1",54,5,17,16,11,true,false],
+  ["CFAMRMLR","AMRMLR","CL-ST-AMR-AmritsarMallRoad","NPJK",54,15,0,14,12,true,false],
+  ["CLMUMPPM","MUMPPM","CL-ST-MUM-PhoenixParelMall","WMUM2",54,5,15,15,5,true,false],
+  ["CFGURGEM","GURGEM","CL-ST-Gurgaon-GoodEarthSixty9MallL2","NNCR3",53,0,10,16,14,true,false],
+  ["CFNGPPTN","NGPPTN","CL-ST-NGP-Pratap Nagar","WROM2",52,10,6,12,12,true,false],
+  ["CFHYDATP","HYDATP","CL-ST-HYD-AttapurL2","STG",52,0,23,15,5,true,false],
+  ["CLMUMKPM","MUMKPM","CL-ST-MUM- KURLA PHOENIX MARKET CITY MALL","WMUM1",52,0,15,14,null,true,true],
+  ["CFSONATR","SONATR","CL-ST-Sonipat-AtlasRoadL2","NRH",51,0,25,12,14,true,false],
+  ["CFHYDSCD","HYDSCD","CL-ST-HYD-Secunderabad","STG",49,5,5,16,10,true,false],
+  ["CRJPRMLN","JPRMLN","CL-ST-L3-JAIPUR-MALVIYANAGAR","NRH",49,25,10,14,0,true,false],
+  ["CFBLRHEN","BLRHEN","CL-ST-BNG-Hennur","SKA1",48,0,21,15,0,true,false],
+  ["CRBHPMVN","BHPMVN","CL-ST-L3-BHP-MalviyaNagar","WMP",48,5,15,16,0,true,false],
+  ["CFBLRPHX","BLRPAM","CL-ST-BNG-PhoenixAsiaMall","SKA1",48,5,0,20,10,true,false],
+  ["CFBLRHSR","BLRHSR","CL-ST-BNG-HSR LAYOUT","SKA2",44,0,18,14,0,true,false],
+  ["CLMUMBOR","MUMBOR","CL-ST-MUM-Borivali","WMUM2",44,0,17,12,0,true,false],
+  ["CFDELSHD","DELSHD","CL-ST-DEL-ShahdaraL2","NNCR2",40,0,25,12,0,true,false],
+  ["CFBVNWWR","BVNWWR","CL-ST-BVN-WaghawadiRoad","WGJ",39,0,0,14,14,true,false],
+  ["CADELOCM","DELOCM","CL-ST-L8-DEL-OmaxeChowkMall","NNCR1",38,0,0,16,12,true,false],
+  ["CFJHSCVL","JHSCVL","CL-ST-Jhansi-CivilLinesL2","NUP1",31,0,10,16,0,true,false],
+  ["CFKNPSKN","KNPSKN","CL-ST-Kanpur-SaketNagarL2","NUP1",31,25,25,13,0,true,false], // adjusted
+  ["CFMRGAQM","MRGAQM","CL-ST-Margoa-Aquem","WROM1",16,0,16,null,null,false,true], // store moving
+];
+
+// Region data
+const REGION_DATA = [
+  {r:"EBJ",nov:66,dec:74,jan:87,pnov:0,pdec:94,pjan:95},
+  {r:"ENE",nov:75,dec:66,jan:77,pnov:92,pdec:0,pjan:94},
+  {r:"EOC",nov:76,dec:79,jan:87,pnov:94,pdec:95,pjan:93},
+  {r:"EWB",nov:63,dec:78,jan:83,pnov:94,pdec:94,pjan:93},
+  {r:"NNCR1",nov:68,dec:77,jan:76,pnov:92,pdec:94,pjan:93},
+  {r:"NNCR2",nov:70,dec:76,jan:81,pnov:93,pdec:92,pjan:96},
+  {r:"NNCR3",nov:70,dec:79,jan:78,pnov:0,pdec:93,pjan:92},
+  {r:"NPJK",nov:83,dec:82,jan:85,pnov:92,pdec:95,pjan:95},
+  {r:"NRH",nov:68,dec:72,jan:80,pnov:93,pdec:97,pjan:94},
+  {r:"NUP1",nov:61,dec:66,jan:76,pnov:94,pdec:92,pjan:93},
+  {r:"NUP2",nov:68,dec:80,jan:84,pnov:94,pdec:92,pjan:91},
+  {r:"SAP",nov:84,dec:90,jan:93,pnov:95,pdec:96,pjan:93},
+  {r:"SKA1",nov:59,dec:63,jan:70,pnov:93,pdec:93,pjan:null},
+  {r:"SKA2",nov:60,dec:67,jan:75,pnov:100,pdec:0,pjan:93},
+  {r:"STG",nov:51,dec:71,jan:72,pnov:0,pdec:94,pjan:93},
+  {r:"STN",nov:73,dec:82,jan:82,pnov:94,pdec:94,pjan:93},
+  {r:"STNK",nov:72,dec:81,jan:83,pnov:96,pdec:93,pjan:94},
+  {r:"WGJ",nov:65,dec:76,jan:76,pnov:90,pdec:92,pjan:93},
+  {r:"WMP",nov:60,dec:70,jan:77,pnov:93,pdec:95,pjan:99},
+  {r:"WMUM1",nov:65,dec:77,jan:80,pnov:95,pdec:98,pjan:95},
+  {r:"WMUM2",nov:70,dec:81,jan:79,pnov:90,pdec:94,pjan:93},
+  {r:"WROM1",nov:66,dec:67,jan:71,pnov:0,pdec:91,pjan:null},
+  {r:"WROM2",nov:55,dec:62,jan:72,pnov:0,pdec:0,pjan:92},
+];
+
+// =================== STATE ===================
+let currentFilter = 'all';
+let currentPage = 1;
+const PAGE_SIZE = 30;
+let sortCol = 4;
+let sortDir = -1;
+let filteredData = [];
+
+// =================== HELPERS ===================
+function getRowClass(pts, elig) {
+  if (!elig) return 'row-ineligible';
+  if (pts >= 100) return 'row-gold';
+  if (pts >= 95) return 'row-green';
+  return '';
+}
+
+function getScoreClass(pts) {
+  if (pts >= 100) return 's100';
+  if (pts >= 95) return 's95';
+  if (pts >= 90) return 's90';
+  return 'slow';
+}
+
+function getStatusTag(pts, elig) {
+  if (!elig) return '<span class="tag tag-no">Not Eligible</span>';
+  if (pts >= 100) return '<span class="tag tag-gold">🏆 Gold</span>';
+  if (pts >= 95) return '<span class="tag tag-green">🌟 95%+</span>';
+  return '<span class="tag tag-eligible">Eligible</span>';
+}
+
+function scoreBarHtml(val, max, color) {
+  if (val === null) return '<span style="color:#aaa;font-size:11px;">NA</span>';
+  const pct = Math.round((val/max)*100);
+  return `<div class="score-bar-wrap"><span style="font-size:11px;font-weight:600;">${val}</span><div class="score-bar"><div class="score-bar-fill" style="width:${pct}%;background:${color};"></div></div></div>`;
+}
+
+function shortName(name) {
+  return name.replace('CL-ST-','').replace('CL-ST ','').replace(/L[0-9]$/,'').trim();
+}
+
+// =================== RENDER WINNERS ===================
+function renderWinners() {
+  const gold = STORE_DATA.filter(s => s[4] >= 100 && s[9]);
+  const green = STORE_DATA.filter(s => s[4] >= 95 && s[4] < 100 && s[9]);
+
+  ['top-winners','all-gold-winners'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = gold.map((s,i) => `
+      <div class="winner-card gold-winner">
+        <div class="winner-badge">🏆</div>
+        <div class="winner-rank">#${i+1}</div>
+        <div class="winner-score">${s[4]}</div>
+        <div class="winner-name">${shortName(s[2])}</div>
+        <div class="winner-region">${s[3]}</div>
+      </div>`).join('');
+  });
+
+  ['runner-winners','all-green-winners'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = green.map((s,i) => `
+      <div class="winner-card green-winner">
+        <div class="winner-badge">⭐</div>
+        <div class="winner-rank">#${i+5}</div>
+        <div class="winner-score">${s[4]}</div>
+        <div class="winner-name">${shortName(s[2])}</div>
+        <div class="winner-region">${s[3]}</div>
+      </div>`).join('');
+  });
+}
+
+// =================== SCOREBOARD ===================
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  document.getElementById('searchClear').style.display = q ? 'block' : 'none';
+
+  // Only eligible in main scoreboard
+  let data = STORE_DATA.filter(s => s[9]);
+
+  if (currentFilter === 'gold') data = data.filter(s => s[4] >= 100);
+  else if (currentFilter === 'green') data = data.filter(s => s[4] >= 95 && s[4] < 100);
+  else if (currentFilter === 'above90') data = data.filter(s => s[4] >= 90);
+  else if (currentFilter === 'below90') data = data.filter(s => s[4] < 90);
+  // eligible = all eligible (default)
+
+  if (q) {
+    data = data.filter(s =>
+      s[0].toLowerCase().includes(q) ||  // code
+      s[1].toLowerCase().includes(q) ||  // ref
+      s[2].toLowerCase().includes(q) ||  // name
+      s[3].toLowerCase() === q           // exact region match
+    );
+  }
+
+  // Sort
+  data.sort((a,b) => {
+    let va = a[sortCol], vb = b[sortCol];
+    if (va === null) va = -999;
+    if (vb === null) vb = -999;
+    if (typeof va === 'string') return va.localeCompare(vb) * sortDir;
+    return (va - vb) * sortDir;
+  });
+
+  filteredData = data;
+  currentPage = 1;
+  renderTable();
+}
+
+function setFilter(el, f) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = f;
+  applyFilters();
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').style.display = 'none';
+  applyFilters();
+}
+
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = -1; }
+  applyFilters();
+}
+
+function renderTable() {
+  const total = filteredData.length;
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const page = filteredData.slice(start, start + PAGE_SIZE);
+
+  document.getElementById('resultCount').textContent = `Showing ${start+1}–${Math.min(start+PAGE_SIZE, total)} of ${total} stores`;
+
+  // Desktop table
+  const tbody = document.getElementById('scoreTableBody');
+  tbody.innerHTML = page.map((s, i) => {
+    const rank = start + i + 1;
+    const rc = getRowClass(s[4], s[9]);
+    return `<tr class="${rc}">
+      <td style="font-weight:600;color:var(--gray);">${rank}</td>
+      <td style="font-weight:600;max-width:180px;font-size:11px;line-height:1.3;">${shortName(s[2])}</td>
+      <td><span class="tag tag-eligible" style="background:#F0F4FF;color:#2255AA;">${s[3]}</span></td>
+      <td style="font-size:10px;color:var(--gray);">${s[1]}</td>
+      <td><span class="badge-score ${getScoreClass(s[4])}">${s[4]}</span></td>
+      <td>${scoreBarHtml(s[5],25,'#3355CC')}</td>
+      <td>${scoreBarHtml(s[6],25,'#CC5500')}</td>
+      <td>${scoreBarHtml(s[7],20,'#6633CC')}</td>
+      <td>${scoreBarHtml(s[8],15,'#336633')}</td>
+      <td>${getStatusTag(s[4],s[9])}</td>
+    </tr>`;
+  }).join('');
+
+  // Mobile cards
+  const mc = document.getElementById('mobileCards');
+  mc.innerHTML = page.map((s, i) => {
+    const rank = start + i + 1;
+    const rc = getRowClass(s[4], s[9]);
+    return `<div class="m-card ${rc}">
+      <div class="m-card-header">
+        <div>
+          <div class="m-card-name">${shortName(s[2])}</div>
+          <div class="m-card-meta">Rank #${rank} · ${s[3]} · ${s[1]}</div>
+        </div>
+        <div>
+          <div class="m-card-score ${getScoreClass(s[4])}">${s[4]}</div>
+          ${getStatusTag(s[4],s[9])}
+        </div>
+      </div>
+      <div class="m-card-scores">
+        <div class="m-score-item" style="background:#E8F0FF;"><div class="val" style="color:#3355CC;">${s[5]??'NA'}</div><div class="lbl">NPS/25</div></div>
+        <div class="m-score-item" style="background:#FFF0E6;"><div class="val" style="color:#CC5500;">${s[6]??'NA'}</div><div class="lbl">Rev/25</div></div>
+        <div class="m-score-item" style="background:#F0E8FF;"><div class="val" style="color:#6633CC;">${s[7]??'NA'}</div><div class="lbl">Ops/20</div></div>
+        <div class="m-score-item" style="background:#E8FFE8;"><div class="val" style="color:#336633;">${s[8]??'NA'}</div><div class="lbl">KM/15</div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Pagination
+  renderPagination(totalPages);
+
+  // NA table
+  const naData = STORE_DATA.filter(s => !s[9] || (s[9] && s[10] && s[4] < 85));
+  document.getElementById('naTableBody').innerHTML = naData.map(s => `
+    <tr style="font-size:11px;">
+      <td style="font-weight:600;">${shortName(s[2])}</td>
+      <td><span class="tag" style="background:#F0F4FF;color:#2255AA;">${s[3]}</span></td>
+      <td style="color:var(--gray);">${s[1]}</td>
+      <td>${s[5]??'NA'}</td>
+      <td>${s[6]??'NA'}</td>
+      <td>${s[7]??'NA'}</td>
+      <td>${s[8]===null?'<span style="color:#C00;font-weight:700;">NA</span>':s[8]}</td>
+      <td>${!s[9]?'<span class="tag tag-no">Not Eligible</span>':s[10]?'<span class="tag" style="background:#FFF0E6;color:#884400;">New/Moving</span>':''}</td>
+    </tr>`).join('');
+}
+
+function renderPagination(total) {
+  const pg = document.getElementById('pagination');
+  if (total <= 1) { pg.innerHTML = ''; return; }
+  let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>← Prev</button>`;
+  const start = Math.max(1, currentPage-2);
+  const end = Math.min(total, currentPage+2);
+  if (start > 1) html += `<button class="page-btn" onclick="goPage(1)">1</button>${start>2?'<span class="page-info">…</span>':''}`;
+  for (let i=start; i<=end; i++) {
+    html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  if (end < total) html += `${end<total-1?'<span class="page-info">…</span>':''}<button class="page-btn" onclick="goPage(${total})">${total}</button>`;
+  html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===total?'disabled':''}>Next →</button>`;
+  html += `<span class="page-info">Page ${currentPage} of ${total}</span>`;
+  pg.innerHTML = html;
+}
+
+function goPage(p) {
+  currentPage = p;
+  renderTable();
+  document.getElementById('tab-scoreboard').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleIneligible() {
+  const c = document.getElementById('ineligibleContent');
+  const ch = document.getElementById('ineligibleChevron');
+  c.classList.toggle('open');
+  ch.classList.toggle('open');
+}
+
+// =================== REGION SEARCH (EXACT MATCH) ===================
+function filterRegions() {
+  const q = document.getElementById('regionSearch').value.trim().toUpperCase();
+  document.getElementById('regionSearchClear').style.display = q ? 'block' : 'none';
+
+  const rows = document.querySelectorAll('#regionTableBody tr');
+  rows.forEach(row => {
+    const regionCell = row.getAttribute('data-region') || '';
+    row.style.display = (!q || regionCell === q) ? '' : 'none';
+  });
+
+  // Show stores in that region
+  const storeList = document.getElementById('regionStoreList');
+  if (q) {
+    const stores = STORE_DATA.filter(s => s[3] === q && s[9]).sort((a,b) => b[4]-a[4]);
+    if (stores.length > 0) {
+      storeList.innerHTML = `
+        <div style="margin-bottom:8px;font-size:12px;color:var(--gray);">${stores.length} stores in region <strong>${q}</strong></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rank</th><th>Store</th><th>Code</th><th>Score</th><th>NPS</th><th>Reviews</th><th>Ops</th><th>KM</th><th>Status</th></tr></thead>
+            <tbody>${stores.map((s,i) => `<tr class="${getRowClass(s[4],s[9])}">
+              <td style="font-weight:600;">${i+1}</td>
+              <td style="font-size:11px;font-weight:600;">${shortName(s[2])}</td>
+              <td style="font-size:10px;color:var(--gray);">${s[1]}</td>
+              <td><span class="badge-score ${getScoreClass(s[4])}">${s[4]}</span></td>
+              <td>${s[5]??'NA'}</td><td>${s[6]??'NA'}</td><td>${s[7]??'NA'}</td><td>${s[8]??'NA'}</td>
+              <td>${getStatusTag(s[4],s[9])}</td>
+            </tr>`).join('')}</tbody>
+          </table>
+        </div>`;
+    } else {
+      storeList.innerHTML = `<div style="color:var(--gray);font-size:13px;padding:12px;">No stores found for region "${q}"</div>`;
+    }
+  } else {
+    storeList.innerHTML = '';
+  }
+}
+
+function clearRegionSearch() {
+  document.getElementById('regionSearch').value = '';
+  document.getElementById('regionSearchClear').style.display = 'none';
+  filterRegions();
+}
+
+function renderRegionTable() {
+  const tbody = document.getElementById('regionTableBody');
+  tbody.innerHTML = REGION_DATA.map(rd => {
+    const delta = rd.jan - rd.dec;
+    const pdelta = (rd.pjan && rd.pdec) ? rd.pjan - rd.pdec : null;
+    const dc = delta > 0 ? 'delta-up' : delta < 0 ? 'delta-dn' : 'delta-eq';
+    const dsym = delta > 0 ? '▲' : delta < 0 ? '▼' : '—';
+    const pdc = pdelta !== null ? (pdelta > 0 ? 'delta-up' : pdelta < 0 ? 'delta-dn' : 'delta-eq') : 'delta-eq';
+    const pdsym = pdelta !== null ? (pdelta > 0 ? '▲' : pdelta < 0 ? '▼' : '—') : '—';
+    return `<tr data-region="${rd.r}">
+      <td><strong>${rd.r}</strong></td>
+      <td>${rd.nov}</td>
+      <td>${rd.dec}</td>
+      <td style="font-weight:700;">${rd.jan}</td>
+      <td><span class="delta-badge ${dc}">${dsym}${Math.abs(delta)}</span></td>
+      <td style="color:var(--gray);">${rd.pnov||'—'}</td>
+      <td style="color:var(--gray);">${rd.pdec||'—'}</td>
+      <td style="font-weight:600;">${rd.pjan||'NA'}</td>
+      <td><span class="delta-badge ${pdc}">${pdsym}${pdelta!==null?Math.abs(pdelta):'—'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// =================== CHARTS ===================
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+// Store chart instances to avoid duplicates
+const chartInstances = {};
+
+function safeChart(id, config) {
+  if (chartInstances[id]) {
+    chartInstances[id].destroy();
+  }
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  chartInstances[id] = new Chart(canvas, config);
+}
+
+function initOverviewChart() {
+  safeChart('nationalChart', {
+    type:'line',
+    data:{
+      labels:["Nov'25","Dec'25","Jan'26"],
+      datasets:[{
+        label:'National CCL Score',
+        data:[67,75,79],
+        borderColor:'#C9A84C',
+        backgroundColor:'rgba(201,168,76,0.12)',
+        borderWidth:3,
+        pointBackgroundColor:'#C9A84C',
+        pointBorderColor:'#fff',
+        pointBorderWidth:2,
+        pointRadius:7,
+        fill:true,
+        tension:0.3
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>`Score: ${ctx.parsed.y}`}}
+      },
+      scales:{
+        y:{min:55,max:90,grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{size:11}}},
+        x:{grid:{display:false},ticks:{font:{size:12,weight:'600'}}}
+      }
+    }
+  });
+}
+
+function initAnalyticsCharts() {
+  const bands = ['Above 90%','80%-89%','70%-79%','60%-69%','<60%'];
+  const dec25 = [20.5,29.3,21.1,16.8,12.3];
+  const jan26 = [29.3,25.1,21.8,13.1,10.6];
+
+  safeChart('barChart', {
+    type:'bar',
+    data:{
+      labels:bands,
+      datasets:[
+        {label:"Dec'25",data:dec25,backgroundColor:'rgba(66,133,244,0.75)',borderRadius:5},
+        {label:"Jan'26",data:jan26,backgroundColor:'rgba(201,168,76,0.9)',borderRadius:5},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{labels:{boxWidth:12,font:{size:11}}}},
+      scales:{
+        y:{ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,0.06)'}},
+        x:{grid:{display:false}}
+      }
+    }
+  });
+
+  safeChart('pieChart', {
+    type:'doughnut',
+    data:{
+      labels:['Above 90% (29.3%)','80%-89% (25.1%)','70%-79% (21.8%)','60%-69% (13.1%)','<60% (10.6%)'],
+      datasets:[{
+        data:[29.3,25.1,21.8,13.1,10.6],
+        backgroundColor:['#2D7A4F','#4A90D9','#F5C842','#E87722','#C0392B'],
+        borderWidth:3,
+        borderColor:'#fff',
+        hoverOffset:8
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom',labels:{boxWidth:12,font:{size:10},padding:8}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.parsed.toFixed(1)}% of stores`}}
+      }
+    }
+  });
+
+  const sortedRegions = [...REGION_DATA].sort((a,b)=>b.jan-a.jan).slice(0,12);
+  safeChart('regionBarChart', {
+    type:'bar',
+    data:{
+      labels:sortedRegions.map(r=>r.r),
+      datasets:[
+        {label:"Dec'25",data:sortedRegions.map(r=>r.dec),backgroundColor:'rgba(100,149,237,0.65)',borderRadius:3},
+        {label:"Jan'26",data:sortedRegions.map(r=>r.jan),backgroundColor:'rgba(201,168,76,0.9)',borderRadius:3},
+      ]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{labels:{boxWidth:10,font:{size:10}}}},
+      scales:{
+        x:{min:50,max:100,grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10}}},
+        y:{grid:{display:false},ticks:{font:{size:10}}}
+      }
+    }
+  });
+
+  const sortedAbove = [...REGION_DATA].filter(r=>r.pjan).sort((a,b)=>b.pjan-a.pjan);
+  safeChart('regionAbove90Chart', {
+    type:'bar',
+    data:{
+      labels:sortedAbove.map(r=>r.r),
+      datasets:[{
+        label:'% Stores >90',
+        data:sortedAbove.map(r=>r.pjan),
+        backgroundColor:sortedAbove.map(r=>r.pjan>=96?'rgba(45,122,79,0.85)':r.pjan>=93?'rgba(201,168,76,0.85)':'rgba(192,57,43,0.75)'),
+        borderRadius:3
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.parsed.x}% stores above 90`}}},
+      scales:{
+        x:{min:88,max:102,grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:10},callback:v=>v+'%'}},
+        y:{grid:{display:false},ticks:{font:{size:10}}}
+      }
+    }
+  });
+
+  const eligible = STORE_DATA.filter(s=>s[9] && s[5]!==null && s[6]!==null && s[7]!==null && s[8]!==null);
+  const avgNPS = (eligible.reduce((a,s)=>a+s[5],0)/eligible.length).toFixed(1);
+  const avgRev = (eligible.reduce((a,s)=>a+s[6],0)/eligible.length).toFixed(1);
+  const avgOps = (eligible.reduce((a,s)=>a+s[7],0)/eligible.length).toFixed(1);
+  const avgKM  = (eligible.reduce((a,s)=>a+s[8],0)/eligible.length).toFixed(1);
+  const pctNPS = ((avgNPS/25)*100).toFixed(0);
+  const pctRev = ((avgRev/25)*100).toFixed(0);
+  const pctOps = ((avgOps/20)*100).toFixed(0);
+  const pctKM  = ((avgKM/15)*100).toFixed(0);
+
+  safeChart('categoryChart', {
+    type:'bar',
+    data:{
+      labels:[`NPS\n${avgNPS}/25 (${pctNPS}%)`, `Reviews\n${avgRev}/25 (${pctRev}%)`, `Store OPS\n${avgOps}/20 (${pctOps}%)`, `Kano Model\n${avgKM}/15 (${pctKM}%)`],
+      datasets:[{
+        label:'Avg Score',
+        data:[avgNPS, avgRev, avgOps, avgKM],
+        backgroundColor:['rgba(51,85,204,0.85)','rgba(204,85,0,0.85)','rgba(102,51,204,0.85)','rgba(51,102,51,0.85)'],
+        borderRadius:5
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>`Avg: ${ctx.parsed.y} / ${[25,25,20,15][ctx.dataIndex]} (${[pctNPS,pctRev,pctOps,pctKM][ctx.dataIndex]}%)`}}
+      },
+      scales:{
+        y:{min:0,max:25,grid:{color:'rgba(0,0,0,0.06)'},ticks:{font:{size:11}}},
+        x:{grid:{display:false},ticks:{font:{size:10}}}
+      }
+    }
+  });
+
+  const topNPS = [...eligible].sort((a,b)=>b[5]-a[5]).slice(0,5);
+  const topRev = [...eligible].sort((a,b)=>b[6]-a[6]).slice(0,5);
+  const topOps = [...eligible].sort((a,b)=>b[7]-a[7]).slice(0,5);
+
+  document.getElementById('categoryLeaders').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+      ${[
+        {title:'🏆 Top NPS Scores',stores:topNPS,col:5,max:25,color:'#3355CC'},
+        {title:'⭐ Top Reviews',stores:topRev,col:6,max:25,color:'#CC5500'},
+        {title:'🏪 Top Store OPS',stores:topOps,col:7,max:20,color:'#6633CC'},
+      ].map(cat=>`
+        <div class="chart-card">
+          <div class="chart-title">${cat.title}</div>
+          ${cat.stores.map((s,i)=>`
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;">
+              <span style="font-weight:700;color:var(--gray);font-size:11px;width:16px;flex-shrink:0;">${i+1}</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:11px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${shortName(s[2])}</div>
+                <div style="font-size:10px;color:var(--gray);">${s[3]} · Total: ${s[4]}</div>
+              </div>
+              <span style="font-weight:700;color:${cat.color};font-size:15px;flex-shrink:0;">${s[cat.col]}/${cat.max}</span>
+            </div>`).join('')}
+        </div>`).join('')}
+    </div>`;
+}
+
+// =================== TAB NAVIGATION ===================
+let analyticsInited = false;
+function showTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  event.target.classList.add('active');
+
+  if (tab === 'analytics' && !analyticsInited) {
+    analyticsInited = true;
+    // Must wait for tab to be visible so Chart.js can read dimensions
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        initAnalyticsCharts();
+      });
+    });
+  }
+}
+
+// =================== INIT ===================
+document.addEventListener('DOMContentLoaded', () => {
+  renderWinners();
+  applyFilters();
+  renderRegionTable();
+
+  // Init overview chart after DOM is ready and tab is visible
+  setTimeout(initOverviewChart, 150);
+});
+</script>
+</body>
+</html>
